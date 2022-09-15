@@ -4,37 +4,27 @@
 namespace Design_Patterns
 {
 
-journal* journal::m_pInstance = nullptr;
-
-journal::journal()
-        : m_sName{"default Journal"} 
+CJournal::CJournal()
+        : m_sName{"default CJournal"} 
 {}
 
 std::mutex oLockerMutex;
 
-journal* journal::GetInstance()
-{
-    if (m_pInstance == nullptr) 
-    {
-        std::lock_guard<std::mutex> oLocker(oLockerMutex);  
-        if (m_pInstance == nullptr)     // DCLP - double checking lock principle
-        {
-            m_pInstance = new journal();
-        }
-    }
+CJournal& CJournal::GetInstance() 
+{   // Meyers' singleton
+    static CJournal oInstance;
 
-    return m_pInstance;;
-
+    return oInstance;;
 }
 
-void journal::SetName(const std::string& sJournalName)
+void CJournal::SetName(const std::string& sCJournalName)
 {
-    m_sName = sJournalName;
+    m_sName = sCJournalName;
 }
 
-const std::string& journal::GetName() const
+const std::string& CJournal::GetName() const
 {
     return m_sName;
 }
 
-} // Design_Patterns
+} // namespace Design_Patterns

@@ -5,15 +5,15 @@
 
 int main()
 {
-    Design_Patterns::journal* pJournal = Design_Patterns::journal::GetInstance();
+    Design_Patterns::CJournal& pCJournal = Design_Patterns::CJournal::GetInstance();
 
-    std::cout << pJournal->GetName() << std::endl;
+    std::cout << pCJournal.GetName() << std::endl;
 
-    pJournal->SetName("Marca");
+    pCJournal.SetName("Marca");
 
     for(int i = 0; i < 10; ++i)
     {
-        std::cout << Design_Patterns::journal::GetInstance()->GetName() << std::endl;
+        std::cout << Design_Patterns::CJournal::GetInstance().GetName() << std::endl;
     }
 
 }

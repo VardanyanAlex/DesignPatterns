@@ -9,30 +9,28 @@
 namespace Design_Patterns
 {
 
-class journal
-{
+class CJournal
+{   // Singleton 
 public:
-    static journal* GetInstance();
+    static CJournal& GetInstance();
 
     void SetName(const std::string&);
 
     const std::string& GetName() const;
 
 protected:
-    journal();
+    CJournal();
 
 private:
-    journal(const journal&) =delete;
-    journal& operator=(const journal&) =delete;
+    CJournal(const CJournal&) =delete;
+    CJournal& operator=(const CJournal&) =delete;
 
-    journal(const journal&&) =delete;
-    journal& operator=(const journal&&) =delete;
+    CJournal(const CJournal&&) =delete;
+    CJournal& operator=(const CJournal&&) =delete;
 
 private:
     std::string m_sName{};
     std::vector<std::string> m_aLogs{};
-
-    static journal* m_pInstance;
 
 };
 

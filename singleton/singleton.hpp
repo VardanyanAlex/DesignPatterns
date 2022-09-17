@@ -3,7 +3,6 @@
 #define DESIGN_PATTERN_SINGLETON
 
 #include <iostream>
-#include <mutex>
 #include <vector>
 
 namespace Design_Patterns
@@ -16,12 +15,11 @@ public:
 
     void SetName(const std::string&);
 
-    const std::string& GetName() const;
-
-protected:
-    CJournal();
+    std::string GetName() const;
 
 private:
+    CJournal() =default;
+
     CJournal(const CJournal&) =delete;
     CJournal& operator=(const CJournal&) =delete;
 
@@ -29,7 +27,7 @@ private:
     CJournal& operator=(const CJournal&&) =delete;
 
 private:
-    std::string m_sName{};
+    std::string m_sName{"default journal"};
     std::vector<std::string> m_aLogs{};
 
 };

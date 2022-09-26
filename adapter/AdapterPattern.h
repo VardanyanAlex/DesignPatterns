@@ -9,7 +9,7 @@ public:
     virtual double getRadius() const;
 
 private:
-    double m_nRadius;
+    double m_fRadius;
 };
 
 class CRoundHall
@@ -22,7 +22,7 @@ public:
     bool fit(CRoundPeg const*) const;
 
 private:
-    double m_nRadius;
+    double m_fRadius;
 };
 
 class CSquarePeg
@@ -32,20 +32,23 @@ public:
 
     double getSquareArea() const;
 
+    double getWidth() const;
+    double getLength() const;
+
 private:
-    double m_nWidth;
-    double m_nLength;
+    double m_fWidth;
+    double m_fLength;
 };
 
 class CSquarePegToRoundPegAdapter : public CRoundPeg
 {
 public:
     CSquarePegToRoundPegAdapter(double nWidth, double nLength);
+    ~CSquarePegToRoundPegAdapter();
     double getRadius() const override;
 
 private:
-    double m_nWidth;
-    double m_nLength;
+    CSquarePeg* m_pSquarePeg = nullptr;
 };
 
 } // namespace DesignPatterns

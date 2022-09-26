@@ -7,7 +7,7 @@
 int main()
 {
     using namespace DesignPatterns;
-    CRoundHall oMyRoundHall{ 2 };
+    CRoundHall oMyRoundHall{ 3 };
 
     std::shared_ptr<CRoundPeg> oSquarePeg{ new CSquarePegToRoundPegAdapter { 3, 4 } };
 

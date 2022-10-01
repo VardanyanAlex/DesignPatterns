@@ -5,12 +5,15 @@ int main()
 {
     using namespace Design_Patterns;
 
-    builder::CLuxuryStadiumBuilder oLuxStadBuilder;
+    builder::CStadiumBuilder* pLuxStadBuilder = new builder::CLuxuryStadiumBuilder;
 
-    CDirector oBuilderDirector{&oLuxStadBuilder};
+    CDirector oBuilderDirector;
+    oBuilderDirector.SetBuilder(pLuxStadBuilder);
 
-    CStadium oCampNou = oBuilderDirector.GetStadium();
-
-    std::cout << oCampNou.GetTribuneSeatsCount() << std::endl;
+    oBuilderDirector.Create(CStadium::EProperty::Seats);
+    
+    CStadium* oCampNou = oBuilderDirector.GetStadium();
+    
+    std::cout << oCampNou->GetTribuneSeatsCount() << std::endl;
 
 }

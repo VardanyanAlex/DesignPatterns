@@ -7,6 +7,10 @@
 namespace Design_Patterns
 { 
 
+CStadium::CStadium(std::string const& sName)
+    : m_sName{ sName }
+{}
+
 CStadium::SGrass::SGrass(EQuality eQuality, bool bNatural)
                         : m_eGrassQuality{eQuality},
                           m_bNatural{bNatural}
@@ -25,55 +29,35 @@ CStadium::STribunes::STribunes(size_t nCount)
                         : m_nCount{nCount}
 {}
 
-CDirector::CDirector(builder::CStadiumBuilder* pBuilder)
-                        : m_pBuilder{pBuilder}
-{
-    if(m_pBuilder == nullptr)
-    {
-        assert(false);
-        throw std::exception{};
-    }
-}
-
-CStadium CDirector::GetStadium()
-{
-    CStadium oStadium{};
-
-    oStadium.SetGates(std::move(m_pBuilder->CreateGates()));
-    oStadium.SetGrass(std::move(m_pBuilder->CreateGrass()));
-    oStadium.SetTribunes(std::move(m_pBuilder->CreateTribunes()));
-    oStadium.SetTrees(std::move(m_pBuilder->CreateSurroundingTrees()));
-
-    return oStadium;
-}
-
 void CStadium::SetGrass(SGrass* pGrass)
 {
-    m_pGrass.reset(pGrass);
+    m_pGrass = std::move(std::make_unique<SGrass>(*pGrass));
 }
 
 void CStadium::SetGates(SGates* pGates)
 {
-    m_pGates.reset(pGates);
+    m_pGates = std::move(std::make_unique<SGates>(*pGates));
 }
 
 void CStadium::SetTribunes(STribunes* pTribunes)
 {
-    m_pTribunes.reset(pTribunes);
+    m_pTribunes = std::move(std::make_unique<STribunes>(*pTribunes));
 }
 
 void CStadium::SetTrees(STrees* pTrees)
 {
-    m_pTrees.reset(pTrees);
+    m_pTrees = std::move(std::make_unique<STrees>(*pTrees));
 }
 
 size_t CStadium::GetTribuneSeatsCount() const
 {
+    assert(m_pTribunes != nullptr);
     return m_pTribunes->m_nCount;
 }
 
 size_t CStadium::GetSurroundingTreesCount() const
 {
+    assert(m_pTrees != nullptr);
     return m_pTrees->m_nCount;
 }
 
@@ -81,47 +65,107 @@ namespace builder
 {
 
 // CSimpleStadiumBuilder impl
-CStadium::SGrass* CSimpleStadiumBuilder::CreateGrass()
+void CSimpleStadiumBuilder::CreateSkeleton() 
 {
-    return new CStadium::SGrass{CStadium::SGrass::EQuality::low, false};
-}
-	
-CStadium::SGates* CSimpleStadiumBuilder::CreateGates() 
-{
-    return new CStadium::SGates{3, 2};
+    m_pSimpleStadium = new CStadium;
 }
 
-CStadium::STrees* CSimpleStadiumBuilder::CreateSurroundingTrees() 
+void CSimpleStadiumBuilder::CreateGrass()
 {
-    return new CStadium::STrees{3};
+    CStadium::SGrass* pSimpleGrass = new CStadium::SGrass(CStadium::SGrass::EQuality::low, false) ;
+    m_pSimpleStadium->SetGrass(pSimpleGrass);
 }
 
-CStadium::STribunes* CSimpleStadiumBuilder::CreateTribunes() 
+void CSimpleStadiumBuilder::CreateGates() 
 {
-    return new CStadium::STribunes{};
+    m_pSimpleStadium->SetGates(new CStadium::SGates{});
+}
+
+void CSimpleStadiumBuilder::CreateSurroundingTrees() 
+{
+    m_pSimpleStadium->SetTrees(new CStadium::STrees{3});
+}
+
+void CSimpleStadiumBuilder::CreateSeats() 
+{
+    m_pSimpleStadium->SetTribunes(new CStadium::STribunes{1});
+}
+
+CStadium* CSimpleStadiumBuilder::Stadium() const
+{
+    return m_pSimpleStadium;
 }
 
 // CLuxuryStadiumBuilder impl
-CStadium::SGrass* CLuxuryStadiumBuilder::CreateGrass()
+void CLuxuryStadiumBuilder::CreateSkeleton() 
 {
-    return new CStadium::SGrass{CStadium::SGrass::EQuality::high, true};
-}
-	
-CStadium::SGates* CLuxuryStadiumBuilder::CreateGates() 
-{
-    return new CStadium::SGates{7, 2};
+    m_pLuxStadium = new CStadium;
 }
 
-CStadium::STrees* CLuxuryStadiumBuilder::CreateSurroundingTrees() 
+void CLuxuryStadiumBuilder::CreateGrass()
 {
-    return new CStadium::STrees{40};
+    CStadium::SGrass* oSimpleGrass = new CStadium::SGrass(CStadium::SGrass::EQuality::low, false);
+    m_pLuxStadium->SetGrass(oSimpleGrass);
 }
 
-CStadium::STribunes* CLuxuryStadiumBuilder::CreateTribunes() 
+void CLuxuryStadiumBuilder::CreateGates() 
 {
-    return new CStadium::STribunes{99354};
+    assert(m_pLuxStadium != nullptr);
+    m_pLuxStadium->SetGates(new CStadium::SGates{});
+}
+
+void CLuxuryStadiumBuilder::CreateSurroundingTrees() 
+{
+    m_pLuxStadium->SetTrees(new CStadium::STrees{3});
+}
+
+void CLuxuryStadiumBuilder::CreateSeats() 
+{
+    m_pLuxStadium->SetTribunes(new CStadium::STribunes{800});
+}
+
+CStadium* CLuxuryStadiumBuilder::Stadium() const
+{
+    return m_pLuxStadium;
 }
 
 } // namespace builder
+
+void CDirector::SetBuilder(builder::CStadiumBuilder* pBuilder)
+{
+    assert(pBuilder != nullptr);
+    m_pBuilder = std::move(pBuilder);
+}
+
+void CDirector::Create(CStadium::EProperty eStadiumPart)
+{
+    if(m_pBuilder->Stadium() == nullptr)
+    {
+        m_pBuilder->CreateSkeleton();
+    }
+
+    switch(eStadiumPart)
+    {
+        case CStadium::EProperty::Gates:
+            m_pBuilder->CreateGates();
+        break;
+        case CStadium::EProperty::Grass:
+            m_pBuilder->CreateGrass();
+        break;
+        case CStadium::EProperty::Seats:
+            m_pBuilder->CreateSeats();
+        break;
+        case CStadium::EProperty::Trees:
+            m_pBuilder->CreateSurroundingTrees();
+        break;
+        default:
+        break;
+    }
+}
+
+CStadium* CDirector::GetStadium() const
+{
+    return m_pBuilder->Stadium();
+}
 
 } // namespace Design_Patterns

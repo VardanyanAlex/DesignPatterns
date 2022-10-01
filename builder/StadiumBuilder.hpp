@@ -11,6 +11,16 @@ namespace Design_Patterns
 class CStadium
 {
 public:
+	enum class EProperty
+	{
+		Seats,
+		Grass,
+		Gates,
+		Trees
+	};
+public:
+
+	CStadium(std::string const& sName = "unnamed");
 
 	struct SGrass
 	{
@@ -20,7 +30,7 @@ public:
 			high
 		};
 
-		explicit SGrass(EQuality, bool bNatural);
+		explicit SGrass(EQuality = EQuality::low, bool bNatural = false);
 
 		EQuality m_eGrassQuality;
 		bool m_bNatural;
@@ -48,19 +58,21 @@ public:
 		size_t m_nCount;
 	};
 
-	void SetGrass(SGrass* = nullptr);
-	void SetGates(SGates* = nullptr);
-	void SetTribunes(STribunes* = nullptr);
-	void SetTrees(STrees* = nullptr);
+	void SetGrass(SGrass*);
+	void SetGates(SGates*);
+	void SetTribunes(STribunes*);
+	void SetTrees(STrees*);
 
 	size_t GetTribuneSeatsCount() const;
 	size_t GetSurroundingTreesCount() const;
 
 private:
-	std::unique_ptr<SGrass> 	m_pGrass;
-	std::unique_ptr<SGates>		m_pGates;
-	std::unique_ptr<STribunes> 	m_pTribunes;
-	std::unique_ptr<STrees>		m_pTrees;
+	std::unique_ptr<SGrass> 		m_pGrass;
+	std::unique_ptr<SGates>			m_pGates;
+	std::unique_ptr<STribunes> 		m_pTribunes;
+	std::unique_ptr<STrees>			m_pTrees;
+
+	std::string 					m_sName;
 };
 
 
@@ -70,29 +82,47 @@ namespace builder
 class CStadiumBuilder
 {
 public:
-	virtual CStadium::SGrass*		CreateGrass() = 0;
-	virtual CStadium::SGates* 		CreateGates() = 0;
-	virtual CStadium::STrees* 		CreateSurroundingTrees() = 0;
-	virtual CStadium::STribunes*	CreateTribunes() = 0;
+	virtual void		CreateSeats() = 0;
+	virtual void		CreateGrass() = 0;
+	virtual void		CreateGates() = 0;
+	virtual void		CreateSurroundingTrees() = 0;
 
+	virtual CStadium* 	Stadium() const = 0;
+
+	virtual void 		CreateSkeleton() = 0;
+	
 };
 
 class CSimpleStadiumBuilder : public CStadiumBuilder
 {
 public:
-	CStadium::SGrass*		CreateGrass() override;
-	CStadium::SGates*		CreateGates() override;
-	CStadium::STrees*		CreateSurroundingTrees() override;
-	CStadium::STribunes*	CreateTribunes() override;
+	virtual void		CreateSeats() override;
+	virtual void		CreateGrass() override;
+	virtual void		CreateGates() override;
+	virtual void		CreateSurroundingTrees() override;
+
+	virtual CStadium* 	Stadium() const override;
+
+	virtual void 		CreateSkeleton() override;
+
+private:
+	CStadium* m_pSimpleStadium = nullptr; 
 };
 
 class CLuxuryStadiumBuilder : public CStadiumBuilder
 {
 public:
-	CStadium::SGrass*		CreateGrass() override;
-	CStadium::SGates*		CreateGates() override;
-	CStadium::STrees*		CreateSurroundingTrees() override;
-	CStadium::STribunes*	CreateTribunes() override;
+	virtual void		CreateSeats() override;
+	virtual void		CreateGrass() override;
+	virtual void		CreateGates() override;
+	virtual void		CreateSurroundingTrees() override;
+
+	virtual CStadium* 	Stadium() const override;
+
+	virtual void 		CreateSkeleton() override;
+
+private:
+	CStadium* m_pLuxStadium = nullptr; 
 };
 
 } // namespace builder
@@ -100,13 +130,14 @@ public:
 class CDirector
 {
 public:
-	explicit CDirector(builder::CStadiumBuilder* = nullptr);
+	void SetBuilder(builder::CStadiumBuilder*);
 
-	CStadium GetStadium();
+	void Create(CStadium::EProperty);
+
+	CStadium* GetStadium() const;
 
 private:
 	builder::CStadiumBuilder* m_pBuilder = nullptr; 
-
 };
 
 } // namespace Design_Patterns

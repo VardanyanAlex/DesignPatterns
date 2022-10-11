@@ -1,24 +1,12 @@
 
-
-#include <iostream>
-#include "max_heap.hpp"
+#include "bridge.h"
 
 int main()
 {
-    int size;
-    std::cin >> size;
-    int* p = new int[size];
+	using namespace DesignPatterns;
+	CProviderDevice* pMyDevice = new CRouter{};
 
-    for (int i =0 ;i<size; i++)
-    {
-        std::cin>>p[i];
-    }
-    heap_sort(p, size);
-    
-    for (int i = 0;i<size;i++)
-    {
-        std::cout<<std::endl<<p[i];
-    }
+	pMyDevice->provide();
 
+	delete pMyDevice;
 }
-

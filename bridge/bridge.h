@@ -17,7 +17,7 @@ public:
 class CWifi : public IInetSharingTechnology
 {
 public:
-    CWifi(std::string sWifiStandard = "ac");
+    explicit CWifi(std::string const& sWifiStandard = "ac");
 
     void provide() const override;
 
@@ -47,7 +47,7 @@ protected:
 class CRouter : public CProviderDevice
 {
 public:
-    CRouter(IInetSharingTechnology* pTech, int iLinkSpeed = 30, int iMaxDistance = 7);
+    explicit CRouter(IInetSharingTechnology* pTech, int iLinkSpeed = 30, int iMaxDistance = 7);
 
     void provide() const override;
 
@@ -58,7 +58,7 @@ private:
 class CSwitch : public CProviderDevice
 {
 public:
-    CSwitch(IInetSharingTechnology* pTech, int iLinkSpeed = 100, int iLanPortsCount = 4);
+    explicit CSwitch(IInetSharingTechnology* pTech, int iLinkSpeed = 100, int iLanPortsCount = 4);
 
     void provide() const override;
 

@@ -7,7 +7,7 @@
 namespace DesignPatterns
 {
 
-CWifi::CWifi(std::string sWifiStandard)
+CWifi::CWifi(std::string const& sWifiStandard)
 	: m_sWifiStandard{ sWifiStandard }
 {}
 

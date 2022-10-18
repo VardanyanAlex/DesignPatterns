@@ -47,7 +47,7 @@ protected:
 class CRouter : public CProviderDevice
 {
 public:
-    CRouter(int iLinkSpeed = 30, int iMaxDistance = 7);
+    CRouter(IInetSharingTechnology* pTech, int iLinkSpeed = 30, int iMaxDistance = 7);
 
     void provide() const override;
 
@@ -58,7 +58,7 @@ private:
 class CSwitch : public CProviderDevice
 {
 public:
-    CSwitch(int iLinkSpeed = 100, int iLanPortsCount = 4);
+    CSwitch(IInetSharingTechnology* pTech, int iLinkSpeed = 100, int iLanPortsCount = 4);
 
     void provide() const override;
 
@@ -69,4 +69,3 @@ private:
 } // namespace DesignPatterns
 
 #endif // _DESIGNPATTERNS_BRIDGE_HPP_
-

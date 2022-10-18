@@ -4,7 +4,9 @@
 int main()
 {
 	using namespace DesignPatterns;
-	CProviderDevice* pMyDevice = new CRouter{};
+
+	CWifi oWifiTechnology;
+	CProviderDevice* pMyDevice = new CRouter{ &oWifiTechnology };
 
 	pMyDevice->provide();
 

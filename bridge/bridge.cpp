@@ -34,8 +34,8 @@ CProviderDevice::CProviderDevice(IInetSharingTechnology* pTech, int iLinkSpeed)
 	, m_iLinkSpeed{ iLinkSpeed }
 {}
 
-CRouter::CRouter(int iLinkSpeed, int iMaxDistance)
-	: CProviderDevice{ new CWifi{}, iLinkSpeed }
+CRouter::CRouter(IInetSharingTechnology* pTech, int iLinkSpeed, int iMaxDistance)
+	: CProviderDevice{ pTech, iLinkSpeed }
 	, m_iMaxDistance{ iMaxDistance }
 {}
 
@@ -45,8 +45,8 @@ void CRouter::provide() const
 	m_pSharingTechnology->provide();
 }
 
-CSwitch::CSwitch(int iLinkSpeed, int iLanPortsCount)
-	: CProviderDevice{ new CEthernet{}, iLinkSpeed }
+CSwitch::CSwitch(IInetSharingTechnology* pTech, int iLinkSpeed, int iLanPortsCount)
+	: CProviderDevice{ pTech, iLinkSpeed }
 	, m_iLanPortsCount{ iLanPortsCount }
 {}
 

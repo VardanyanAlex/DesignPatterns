@@ -1,5 +1,6 @@
 
 #ifndef _DESIGN_PATTERNS_DECORATOR_HPP
+#define _DESIGN_PATTERNS_DECORATOR_HPP
 
 namespace DesignPatterns
 {

@@ -18,8 +18,8 @@ public:
     void Draw() const override;
 
 private:
-    int m_x{};
-    int m_y{};
+    int m_x = 0;
+    int m_y = 0;
 };
 
 class CLine : public IGraphic
@@ -30,8 +30,8 @@ public:
     void Draw() const override;
 
 private:
-    int m_x{};
-    int m_y{};
+    int m_x = 0;
+    int m_y = 0;
 };
 
 class CPicture : public IGraphic

@@ -12,7 +12,7 @@ namespace DesignPatterns
 class CFactory
 {
 public:
-    std::unique_ptr<animal::CAnimal> CreateAnimal(std::string const& sName, std::string const& sType) const;
+    Animal_UPtr CreateAnimal(std::string const& sName, std::string const& sType) const;
 
     static CFactory& Instance();
 

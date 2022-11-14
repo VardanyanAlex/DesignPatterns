@@ -1,50 +1,47 @@
 
+#include <iostream>
+
 #include "animal.h"
 
 namespace animal
 {
 
-CAnimal::CAnimal(std::string sName, std::string sType)
+CAnimal::CAnimal(std::string const& sName, std::string const& sType)
     : m_sName{sName}
     , m_sType{sType}
 {}
 
-CGiraffe::CGiraffe(std::string sName, std::string sType)
-    : CAnimal{sName, sType}
-{}
-
-std::string CGiraffe::GetType() const 
+std::string CAnimal::GetType() const
 {
     return m_sType;
 }
 
-void CGiraffe::SetName(std::string sName)
+void CAnimal::SetName(std::string const& sName)
 {
     m_sName = sName;
 }
 
-std::string CGiraffe::GetName() const 
+std::string CAnimal::GetName() const 
 {
     return m_sName;
 }
 
-CLion::CLion(std::string sName , std::string sType )
+CGiraffe::CGiraffe(std::string const& sName, std::string const& sType)
     : CAnimal{sName, sType}
 {}
 
-std::string CLion::GetType() const 
+void CGiraffe::Speak() const
 {
-    return m_sType;
+    std::cout << "Giraffe voice...\n";
 }
 
-void CLion::SetName(std::string sName)
-{
-    m_sName = sName;
-}
+CLion::CLion(std::string const& sName, std::string const& sType )
+    : CAnimal{sName, sType}
+{}
 
-std::string CLion::GetName() const 
+void CLion::Speak() const
 {
-    return m_sName;
+    std::cout << "Lion voice...\n";
 }
 
 } // namespace animal

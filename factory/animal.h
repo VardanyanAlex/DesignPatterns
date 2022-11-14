@@ -8,47 +8,46 @@
 namespace animal
 {
 
-//using AnimalPtr = std::unique_ptr<CAnimal>;
 class CAnimal
 {
 public:
-    CAnimal(std::string sName = {}, std::string sType = "");
+    CAnimal(std::string const& sName, std::string const& sType);
 
-    virtual std::string GetType() const = 0;
+    std::string GetType() const;
 
-    virtual void SetName(std::string sName) = 0;
-    virtual std::string GetName() const = 0;
+    void SetName(std::string const& sName);
+    std::string GetName() const;
+
+    virtual void Speak() const = 0;
 
 protected:
-    std::string m_sName{};
-    std::string m_sType{};
+    std::string m_sName;
+    std::string m_sType;
 };
 
 class CGiraffe : public CAnimal
 {
 public:
-    CGiraffe(std::string sName = {}, std::string sType = "giraffe");
-
-    std::string GetType() const override;
-
-    void SetName(std::string sName) override;
-    std::string GetName() const override;
+    CGiraffe(std::string const& sName = {}, std::string const& sType = "giraffe");
+    
+    void Speak() const override;
 
 private:
-    
+    size_t m_iNeckLength;
 };
 
 class CLion : public CAnimal
 {
 public:
-    CLion(std::string sName = {}, std::string sType = "lion");
+    CLion(std::string const& sName = {}, std::string const& sType = "lion");
 
-    std::string GetType() const override;
+    void Speak() const override;
 
-    void SetName(std::string sName) override;
-    std::string GetName() const override;
+private:
+    size_t m_iHuntingPower;
 };
 
 } // namespace animal
+using Animal_UPtr = std::unique_ptr<class animal::CAnimal>;
 
 #endif // __ANIMAL_PLANET_ANIMAL_HPP_

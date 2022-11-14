@@ -7,9 +7,9 @@
 namespace DesignPatterns
 {
 
-std::unique_ptr<animal::CAnimal> CFactory::CreateAnimal(std::string const& sName, std::string const& sType) const
+Animal_UPtr CFactory::CreateAnimal(std::string const& sName, std::string const& sType) const
 {
-    std::unique_ptr<animal::CAnimal> pAnimal{nullptr};
+    Animal_UPtr pAnimal{nullptr};
 
     if( sType == "lion")
         pAnimal = std::move(std::make_unique<animal::CLion>(sName, sType));

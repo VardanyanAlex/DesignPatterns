@@ -17,7 +17,7 @@ public:
     void Exec();
 
 private:
-    std::vector<std::unique_ptr<animal::CAnimal>>m_aAnimals;
+    std::vector<Animal_UPtr>m_aAnimals;
 
 };
 

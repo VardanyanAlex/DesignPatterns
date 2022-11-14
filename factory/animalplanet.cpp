@@ -25,7 +25,7 @@ void CAnimalPlanetApp::Exec()
         if(sName == "exit")
             break;
 
-        std::unique_ptr<animal::CAnimal> pAnimal{nullptr};
+        Animal_UPtr pAnimal{nullptr};
         try
         {
             pAnimal = std::move(DesignPatterns::CFactory::Instance().CreateAnimal(sName, sType));
